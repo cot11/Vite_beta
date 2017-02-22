@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:weightSum="1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context="com.opencv.eonu.vite_beta.MainActivity">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/drawview"
+            android:weightSum="100"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView android:layout_weight="30"
+            android:id="@+id/user_face"
+            android:layout_gravity="center"
+            android:src="@drawable/test1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+            <ImageView android:layout_weight="30"
+                android:id="@+id/user_face2"
+                android:layout_gravity="center"
+                android:src="@drawable/test1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            <LinearLayout
+                android:layout_weight="40"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <Button
+                    android:layout_gravity="center"
+                    android:text="Sgment"
+                    android:id="@+id/click"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:layout_gravity="center"
+                    android:text="draw"
+                    android:id="@+id/click2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:layout_gravity="center"
+                    android:text="skin"
+                    android:id="@+id/click3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:layout_gravity="center"
+                    android:text="clothes cut"
+                    android:id="@+id/click4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
