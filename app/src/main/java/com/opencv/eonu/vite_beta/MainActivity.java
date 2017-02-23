@@ -1225,6 +1225,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        Bitmap myBitmap2 = Bitmap.createBitmap(upload_bm);
+        Mat facece = new Mat();
+        Utils.bitmapToMat(myBitmap2, facece);
         Imgproc.Canny(face1_rgb,face1_rgb,100,200);
         //Imgproc.dilate(face1_rgb, face1_rgb, Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3,3)));
         Utils.bitmapToMat(dstBmp,face2_rgb);
@@ -1301,7 +1304,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         int[] leftcount = new int[chin_y - (int)cheek_leftY];
+        int[] leftcounty = new int[chin_y - (int)cheek_leftY];
         int[] rightcount = new int[chin_y - (int)cheek_leftY];
+        int[] rightcounty = new int[chin_y - (int)cheek_leftY];
         int remember_x = 0;
         count = 0;
         for(int i = (int)cheek_leftY; i < chin_y; i++)
@@ -1318,8 +1323,10 @@ public class MainActivity extends AppCompatActivity {
             }
             if(count != 0)
             {
-                face1_rgb.put(i, remember_x, 255);
+                face1_rgb.put(i, remember_x, 0);
                 leftcount[i - (int)cheek_leftY] = remember_x;
+                leftcounty[i - (int)cheek_leftY] = i;
+
             }
             else
             {
@@ -1345,8 +1352,10 @@ public class MainActivity extends AppCompatActivity {
             }
             if(count != 0)
             {
-                face1_rgb.put(i, remember_x, 255);
+                face1_rgb.put(i, remember_x, 0);
                 rightcount[i - (int)cheek_leftY] = remember_x;
+                rightcounty[i - (int)cheek_leftY] = i;
+
             }
             else
             {
@@ -1355,13 +1364,89 @@ public class MainActivity extends AppCompatActivity {
             count = 0;
         }
 
-        int remember_count = 0;
+        int remember_count = rightcount[0];
         for(int i = 1; i < rightcount.length; i++)
         {
+            if(remember_count == rightcount[i])
+            {
+                rightcount[i] = rightcount[i-1];
+                continue;
+            }
+
             if(rightcount[i] != 0 && rightcount[i-1] != 0)
             {
-                System.out.println(rightcount[i] + " - " + rightcount[i-1]);
+
+                int ab = Math.abs(rightcount[i] - rightcount[i-1]);
+                if(ab > 3)
+                {
+
+                    if(rightcount[i] > rightcount[i-1])
+                    {
+                        remember_count = rightcount[i];
+                        rightcount[i] = rightcount[i-1]+1;
+
+                    }
+                    else
+                    {
+                        remember_count = rightcount[i];
+                        rightcount[i] = rightcount[i-1]-1;
+                    }
+                }
+
             }
+        }
+
+        Imgproc.cvtColor(facece,facece,Imgproc.COLOR_BGRA2BGR);
+        double[] cccc = new double[3];
+        cccc[0] = 255;
+        cccc[1] = 255;
+        cccc[2] = 255;
+
+        for(int i = 1; i < rightcount.length; i++)
+        {
+            face1_rgb.put(rightcounty[i], rightcount[i], 255);
+            facece.put(rightcounty[i],rightcount[i],cccc);
+        }
+
+
+        remember_count = leftcount[0];
+        for(int i = 1; i < rightcount.length; i++)
+        {
+            if(remember_count == leftcount[i])
+            {
+                leftcount[i] = leftcount[i-1];
+                continue;
+            }
+
+            if(leftcount[i] != 0 && leftcount[i-1] != 0)
+            {
+
+                int ab = Math.abs(leftcount[i] - leftcount[i-1]);
+                if(ab >= 2)
+                {
+                    if(leftcount[i] > leftcount[i-1])
+                    {
+                        remember_count = leftcount[i];
+                        leftcount[i] = leftcount[i-1]+1;
+
+                    }
+                    else
+                    {
+                        remember_count = leftcount[i];
+                        leftcount[i] = leftcount[i-1]-1;
+                    }
+                }
+
+            }
+        }
+
+
+
+        for(int i = 1; i < leftcount.length; i++)
+        {
+            System.out.println("aa : " + leftcount[i]);
+            face1_rgb.put(leftcounty[i], leftcount[i], 255);
+            facece.put(leftcounty[i],leftcount[i],cccc);
         }
 
 
@@ -1369,7 +1454,7 @@ public class MainActivity extends AppCompatActivity {
         Imgproc.erode(face1_rgb, face1_rgb, Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(1,1)));
 
 
-        Utils.matToBitmap(face1_rgb,myBitmap);
+        Utils.matToBitmap(facece,myBitmap);
         //myBitmap = Bitmap.createBitmap(myBitmap,(int)cheek_leftX,(int)cheek_leftY,width_a,heigt_a);
         user_face.setImageDrawable(new BitmapDrawable(getResources(), myBitmap));
 
