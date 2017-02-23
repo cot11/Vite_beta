@@ -18,20 +18,9 @@
             android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <ImageView android:layout_weight="30"
-            android:id="@+id/user_face"
-            android:layout_gravity="center"
-            android:src="@drawable/test1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-            <ImageView android:layout_weight="30"
-                android:id="@+id/user_face2"
-                android:layout_gravity="center"
-                android:src="@drawable/test1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+
             <LinearLayout
-                android:layout_weight="40"
+                android:layout_weight="70"
                 android:layout_gravity="center"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -61,6 +50,65 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_weight="10"
+                android:orientation="horizontal"
+                android:weightSum="100"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView android:layout_weight="50"
+                    android:id="@+id/user_face"
+                    android:layout_gravity="center"
+                    android:src="@drawable/test1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <ImageView android:layout_weight="50"
+                    android:id="@+id/user_face2"
+                    android:layout_gravity="center"
+                    android:src="@drawable/test1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_weight="10"
+                android:weightSum="100"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView android:layout_weight="50"
+                    android:id="@+id/user_face3"
+                    android:layout_gravity="center"
+                    android:src="@drawable/test1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <ImageView android:layout_weight="50"
+                    android:id="@+id/user_face4"
+                    android:layout_gravity="center"
+                    android:src="@drawable/test1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_weight="10"
+                android:weightSum="100"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView android:layout_weight="50"
+                    android:id="@+id/user_face5"
+                    android:layout_gravity="center"
+                    android:src="@drawable/test1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <ImageView android:layout_weight="50"
+                    android:id="@+id/user_face6"
+                    android:layout_gravity="center"
+                    android:src="@drawable/test1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

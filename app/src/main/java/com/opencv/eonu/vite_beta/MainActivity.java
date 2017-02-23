@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int CROP_FROM_IMAGE = 2;
 
     private Uri CaptureUri;
-    ImageView user_face, user_face2;
+    ImageView user_face, user_face2,user_face3,user_face4,user_face5,user_face6;
     Button btn, btn2, btn3, btn4;
     Bitmap upload_bm = null;
     Bitmap upload_bm2 = null;
@@ -87,6 +87,10 @@ public class MainActivity extends AppCompatActivity {
 
         user_face = (ImageView) findViewById(R.id.user_face); // 이미지 뷰
         user_face2 = (ImageView) findViewById(R.id.user_face2);
+        user_face3 = (ImageView) findViewById(R.id.user_face3);
+        user_face4 = (ImageView) findViewById(R.id.user_face4);
+        user_face5 = (ImageView) findViewById(R.id.user_face5);
+        user_face6 = (ImageView) findViewById(R.id.user_face6);
         context = this;
 
         btn.setOnClickListener(new View.OnClickListener() {
@@ -1040,7 +1044,6 @@ public class MainActivity extends AppCompatActivity {
     private void face_dectect(View v)
     {
 
-        System.out.println("ho");
         float x1 = 0,x2 = 0,y1 = 0,y2 = 0;
         float x1_2 = 0,x2_2 = 0,y1_2 = 0,y2_2 = 0;
         float mouse_x = 0.0f;
@@ -1178,14 +1181,15 @@ public class MainActivity extends AppCompatActivity {
         thisgetheight = thisgetheight * 0.95;
         thisgetwidth = thisgetwidth - (dis_int * 2);
 
-        myBitmap =  Bitmap.createBitmap((int)face1_rgb.size().width,(int)face1_rgb.size().height, Bitmap.Config.ARGB_8888);
-        Bitmap dstBmp = Bitmap.createBitmap(tempBitmap,(int)xk,(int)yy1,(int)thisgetwidth,(int)thisgetheight);
+        myBitmap =  upload_bm;
+        user_face.setImageDrawable(new BitmapDrawable(getResources(), myBitmap));
+        Bitmap myBitmap2 = Bitmap.createBitmap(tempBitmap,(int)xk,(int)yy1,(int)thisgetwidth,(int)thisgetheight); //얼굴사이즈
         face1_rgb = grabcut(face1_rgb, (int)xk, (int)yy1, (int)thisgetwidth, (int)thisgetheight, 3);
 
         double[] change_RGB = new double[3];
         int chin_x = 0;
         int chin_y = 0;
-        for(int c = (int)mouse_y; c < face1_rgb.height(); c++) {
+        for(int c = (int)mouse_y; c < face1_rgb.height(); c++) { // 턱 검출
             change_RGB[0] = face1_rgb.get(c, (int) mouse_x)[0];
             change_RGB[1] = face1_rgb.get(c, (int) mouse_x)[1];
             change_RGB[2] = face1_rgb.get(c, (int) mouse_x)[2];
@@ -1198,7 +1202,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        for(int c = (int)left_x; c > 0; c--) {
+        for(int c = (int)left_x; c > 0; c--) { //왼쪽 뺨 검출
             change_RGB[0] = face1_rgb.get((int)left_y, c)[0];
             change_RGB[1] = face1_rgb.get((int)left_y, c)[1];
             change_RGB[2] = face1_rgb.get((int)left_y, c)[2];
@@ -1211,7 +1215,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        for(int c = (int)right_x; c < face1_rgb.width(); c++) {
+        for(int c = (int)right_x; c < face1_rgb.width(); c++) { // 오른쪽 뺨 검출
             change_RGB[0] = face1_rgb.get((int)right_y, c)[0];
             change_RGB[1] = face1_rgb.get((int)right_y, c)[1];
             change_RGB[2] = face1_rgb.get((int)right_y, c)[2];
@@ -1225,14 +1229,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        Bitmap myBitmap2 = Bitmap.createBitmap(upload_bm);
-        Mat facece = new Mat();
-        Utils.bitmapToMat(myBitmap2, facece);
-        Imgproc.Canny(face1_rgb,face1_rgb,100,200);
+        Bitmap myBitmap3 = Bitmap.createBitmap((int)face1_rgb.size().width,(int)face1_rgb.size().height, Bitmap.Config.ARGB_8888);
+        Imgproc.Canny(face1_rgb,face1_rgb,100,200); // 양뺨을 높이로 자른 이미지 엣지만
         //Imgproc.dilate(face1_rgb, face1_rgb, Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3,3)));
-        Utils.bitmapToMat(dstBmp,face2_rgb);
-
-        user_face2.setImageDrawable(new BitmapDrawable(getResources(), dstBmp));
+        Utils.bitmapToMat(myBitmap2,face2_rgb);
+        Utils.matToBitmap(face1_rgb,myBitmap3);
+        user_face2.setImageDrawable(new BitmapDrawable(getResources(), myBitmap2));
+        user_face3.setImageDrawable(new BitmapDrawable(getResources(), myBitmap3));
 
         int width_a = (int)(cheek_rightX - cheek_leftX);
         int heigt_a = (int)(chin_y - cheek_leftY);
@@ -1246,8 +1249,6 @@ public class MainActivity extends AppCompatActivity {
 
         list_cheekLeft[0] = cheek_leftX;
         list_cheekRight[0] = cheek_rightX;
-
-        //시작 2017
 
         for(int i = 1; i < list_cheekLeft.length; i++)
         {
@@ -1303,12 +1304,18 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        Bitmap myBitmap4 = Bitmap.createBitmap((int)face1_rgb.size().width,(int)face1_rgb.size().height, Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(face1_rgb,myBitmap4);
+        user_face4.setImageDrawable(new BitmapDrawable(getResources(), myBitmap4));
+
+
         int[] leftcount = new int[chin_y - (int)cheek_leftY];
         int[] leftcounty = new int[chin_y - (int)cheek_leftY];
         int[] rightcount = new int[chin_y - (int)cheek_leftY];
         int[] rightcounty = new int[chin_y - (int)cheek_leftY];
         int remember_x = 0;
         count = 0;
+
         for(int i = (int)cheek_leftY; i < chin_y; i++)
         {
             for(int j = 0; j <= chin_x; j++)
@@ -1338,6 +1345,7 @@ public class MainActivity extends AppCompatActivity {
 
         remember_x = 0;
         count = 0;
+
         for(int i = (int)cheek_leftY; i < chin_y; i++)
         {
             for(int j = face1_rgb.width()-1; j >= chin_x; j--)
@@ -1363,6 +1371,7 @@ public class MainActivity extends AppCompatActivity {
             }
             count = 0;
         }
+
 
         int remember_count = rightcount[0];
         for(int i = 1; i < rightcount.length; i++)
@@ -1396,7 +1405,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        Imgproc.cvtColor(facece,facece,Imgproc.COLOR_BGRA2BGR);
+        Bitmap myBitmap5 = Bitmap.createBitmap((int)face1_rgb.size().width,(int)face1_rgb.size().height, Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(face1_rgb,myBitmap5);
+        user_face5.setImageDrawable(new BitmapDrawable(getResources(), myBitmap5));
+
+
         double[] cccc = new double[3];
         cccc[0] = 255;
         cccc[1] = 255;
@@ -1405,7 +1418,6 @@ public class MainActivity extends AppCompatActivity {
         for(int i = 1; i < rightcount.length; i++)
         {
             face1_rgb.put(rightcounty[i], rightcount[i], 255);
-            facece.put(rightcounty[i],rightcount[i],cccc);
         }
 
 
@@ -1446,17 +1458,15 @@ public class MainActivity extends AppCompatActivity {
         {
             System.out.println("aa : " + leftcount[i]);
             face1_rgb.put(leftcounty[i], leftcount[i], 255);
-            facece.put(leftcounty[i],leftcount[i],cccc);
         }
 
 
         Imgproc.dilate(face1_rgb, face1_rgb, Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3,3)));
         Imgproc.erode(face1_rgb, face1_rgb, Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(1,1)));
 
-
-        Utils.matToBitmap(facece,myBitmap);
-        //myBitmap = Bitmap.createBitmap(myBitmap,(int)cheek_leftX,(int)cheek_leftY,width_a,heigt_a);
-        user_face.setImageDrawable(new BitmapDrawable(getResources(), myBitmap));
+        Bitmap myBitmap6 = Bitmap.createBitmap((int)face1_rgb.size().width,(int)face1_rgb.size().height, Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(face1_rgb,myBitmap6);
+        user_face6.setImageDrawable(new BitmapDrawable(getResources(), myBitmap6));
 
         /*
         double[] change_RGB = new double[3];
