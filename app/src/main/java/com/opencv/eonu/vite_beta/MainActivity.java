@@ -916,15 +916,10 @@ public class MainActivity extends AppCompatActivity {
 
         aver_faceH = value_faceH / sortedfaceMap_H.size();
         aver_bodyH = value_bodyH / sortedbodyMap_H.size();
-
-
         aver_faceS = value_faceS / sortedfaceMap_S.size();
         aver_bodyS = value_bodyS / sortedbodyMap_S.size();
-
-
         aver_faceV = value_faceV / sortedfaceMap_V.size();
         aver_bodyV = value_bodyV / sortedbodyMap_V.size();
-
 
         System.out.println("aver_faceH : " + aver_faceH);
         System.out.println("aver_faceS : " + aver_faceS);
@@ -1048,7 +1043,6 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("ho");
         float x1 = 0,x2 = 0,y1 = 0,y2 = 0;
         float x1_2 = 0,x2_2 = 0,y1_2 = 0,y2_2 = 0;
-
         float mouse_x = 0.0f;
         float mouse_y = 0.0f;
         float nose_x = 0.0f;
@@ -1249,6 +1243,8 @@ public class MainActivity extends AppCompatActivity {
 
         list_cheekLeft[0] = cheek_leftX;
         list_cheekRight[0] = cheek_rightX;
+
+        //시작
 
         for(int i = 1; i < list_cheekLeft.length; i++)
         {
