@@ -1244,7 +1244,7 @@ public class MainActivity extends AppCompatActivity {
         list_cheekLeft[0] = cheek_leftX;
         list_cheekRight[0] = cheek_rightX;
 
-        //시작
+        //시작 2017
 
         for(int i = 1; i < list_cheekLeft.length; i++)
         {
