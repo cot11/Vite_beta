@@ -1,26 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:weightSum="1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     tools:context="com.opencv.eonu.vite_beta.MainActivity">
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/drawview"
             android:weightSum="100"
+            android:id="@+id/drawview"
             android:orientation="vertical"
             android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
             <LinearLayout
-                android:layout_weight="70"
+                android:layout_weight="90"
                 android:layout_gravity="center"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -50,65 +44,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
-
             <LinearLayout
+                android:id="@+id/image_back"
                 android:layout_weight="10"
-                android:orientation="horizontal"
-                android:weightSum="100"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <ImageView android:layout_weight="50"
+                <ImageView
                     android:id="@+id/user_face"
-                    android:layout_gravity="center"
-                    android:src="@drawable/test1"
+                    android:scaleType="fitCenter"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
-                <ImageView android:layout_weight="50"
-                    android:id="@+id/user_face2"
-                    android:layout_gravity="center"
-                    android:src="@drawable/test1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_weight="10"
-                android:weightSum="100"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <ImageView android:layout_weight="50"
-                    android:id="@+id/user_face3"
-                    android:layout_gravity="center"
-                    android:src="@drawable/test1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-                <ImageView android:layout_weight="50"
-                    android:id="@+id/user_face4"
-                    android:layout_gravity="center"
-                    android:src="@drawable/test1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_weight="10"
-                android:weightSum="100"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <ImageView android:layout_weight="50"
-                    android:id="@+id/user_face5"
-                    android:layout_gravity="center"
-                    android:src="@drawable/test1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-                <ImageView android:layout_weight="50"
-                    android:id="@+id/user_face6"
-                    android:layout_gravity="center"
-                    android:src="@drawable/test1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-            </LinearLayout>
-
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+</LinearLayout>

@@ -68,9 +68,11 @@ public class MainActivity extends AppCompatActivity {
 
     private Uri CaptureUri;
     ImageView user_face, user_face2,user_face3,user_face4,user_face5,user_face6;
+    LinearLayout image_back;
     Button btn, btn2, btn3, btn4;
     Bitmap upload_bm = null;
     Bitmap upload_bm2 = null;
+    Bitmap face_t,body_t,leg_t,foot_t;
     boolean select = false;
     Context context;
     Mat rgb;
@@ -93,11 +95,12 @@ public class MainActivity extends AppCompatActivity {
         btn4 = (Button)findViewById(R.id.click4);
 
         user_face = (ImageView) findViewById(R.id.user_face); // 이미지 뷰
-        user_face2 = (ImageView) findViewById(R.id.user_face2);
-        user_face3 = (ImageView) findViewById(R.id.user_face3);
-        user_face4 = (ImageView) findViewById(R.id.user_face4);
-        user_face5 = (ImageView) findViewById(R.id.user_face5);
-        user_face6 = (ImageView) findViewById(R.id.user_face6);
+        //user_face2 = (ImageView) findViewById(R.id.user_face2);
+        //user_face3 = (ImageView) findViewById(R.id.user_face3);
+        //user_face4 = (ImageView) findViewById(R.id.user_face4);
+        //user_face5 = (ImageView) findViewById(R.id.user_face5);
+        //user_face6 = (ImageView) findViewById(R.id.user_face6);
+        image_back = (LinearLayout)findViewById(R.id.image_back);
         context = this;
         mMainHandler = new SendMassgeHandler();
 
@@ -142,10 +145,6 @@ public class MainActivity extends AppCompatActivity {
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) { // 옷 분리
-                if(upload_bm == null)
-                {
-                    return;
-                }
                 View cview = getCurrentFocus();
                 Dection(cview);
 
@@ -185,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /*
         user_face2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -217,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        */
 
     }
 
@@ -267,43 +268,25 @@ public class MainActivity extends AppCompatActivity {
     private void Dection(View v)
     {
 
+        bmOverlay = Bitmap.createBitmap(500,1000, Bitmap.Config.ARGB_8888);
 
-        final Bitmap myBitmap = upload_bm;
-        try
-        {
-            Bitmap myBitmap2 = upload_bm2;
-        }catch (Exception e)
-        {
+        face_t = BitmapFactory.decodeResource(context.getResources(), R.drawable.face181bbb39);
+        foot_t = BitmapFactory.decodeResource(context.getResources(), R.drawable.foot176bbb739);
+        leg_t = BitmapFactory.decodeResource(context.getResources(), R.drawable.leg157bbb435);
+        body_t = BitmapFactory.decodeResource(context.getResources(), R.drawable.body157bbb143);
 
-        }
         //String sdPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Download/41,169.png";
         //final Bitmap bitmap1 = BitmapFactory.decodeFile(sdPath);
-
-
-        final Bitmap backg = Bitmap.createBitmap(424,910, Bitmap.Config.ARGB_8888);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 // TODO Auto-generated method stub
 
-                /*
-                for(int x = 0; x < cmat1.width(); x++)
-                {
-                    for(int y = 0; y < cmat1.height(); y++)
-                    {
-                        cchange[0] = cmat1.get(y,x)[0];
-                        cchange[1] = cmat1.get(y,x)[1];
-                        cchange[2] = cmat1.get(y,x)[2];
-                        cchange[3] = Color.TRANSPARENT;
-                        cbody.put(y1,x1,cchange);
-                        y1++;
-                    }
-                    System.out.println(y1 + "," + x1);
-                    y1 = yy;
-                    x1++;
-                }
-                */
+                bmOverlay = overlayMark(bmOverlay,face_t,181,39);
+                bmOverlay = overlayMark(bmOverlay,body_t,157,143);
+                //bmOverlay = overlayMark(bmOverlay,foot_t,176,739);
+                //bmOverlay = overlayMark(bmOverlay,leg_t,0,0);
                 Message msg = mMainHandler.obtainMessage();
                 msg.what = 1;
                 mMainHandler.sendMessage(msg);
@@ -1751,8 +1734,7 @@ public class MainActivity extends AppCompatActivity {
 
             switch (msg.what) {
                 case 1:
-                    user_face2.setImageDrawable(new BitmapDrawable(getResources(), bmOverlay));
-
+                    user_face.setImageDrawable(new BitmapDrawable(getResources(), bmOverlay));
                     break;
                 default:
                     break;
@@ -1781,10 +1763,10 @@ public class MainActivity extends AppCompatActivity {
 
     private Bitmap overlayMark(Bitmap bmp1, Bitmap bmp2,int x, int y)
     {
-        Bitmap bmOverlay = Bitmap.createBitmap(bmp1.getWidth(), bmp1.getHeight(), bmp1.getConfig());
-        Canvas canvas = new Canvas(bmOverlay);
+        Bitmap temp = Bitmap.createBitmap(bmp1.getWidth(), bmp1.getHeight(), bmp1.getConfig());
+        Canvas canvas = new Canvas(temp);
         canvas.drawBitmap(bmp1, 0, 0, null);
         canvas.drawBitmap(bmp2, x, y, null);
-        return bmOverlay;
+        return temp;
     }
 }
