@@ -15,6 +15,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +27,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.face.Face;
@@ -42,6 +45,7 @@ import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
@@ -71,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
     Context context;
     Mat rgb;
 
+    private SendMassgeHandler mMainHandler = null;
+    Bitmap bmOverlay;
+
 
     boolean first_cut = false;
 
@@ -92,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         user_face5 = (ImageView) findViewById(R.id.user_face5);
         user_face6 = (ImageView) findViewById(R.id.user_face6);
         context = this;
+        mMainHandler = new SendMassgeHandler();
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -259,6 +267,51 @@ public class MainActivity extends AppCompatActivity {
     private void Dection(View v)
     {
 
+
+        final Bitmap myBitmap = upload_bm;
+        try
+        {
+            Bitmap myBitmap2 = upload_bm2;
+        }catch (Exception e)
+        {
+
+        }
+        //String sdPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Download/41,169.png";
+        //final Bitmap bitmap1 = BitmapFactory.decodeFile(sdPath);
+
+
+        final Bitmap backg = Bitmap.createBitmap(424,910, Bitmap.Config.ARGB_8888);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+
+                /*
+                for(int x = 0; x < cmat1.width(); x++)
+                {
+                    for(int y = 0; y < cmat1.height(); y++)
+                    {
+                        cchange[0] = cmat1.get(y,x)[0];
+                        cchange[1] = cmat1.get(y,x)[1];
+                        cchange[2] = cmat1.get(y,x)[2];
+                        cchange[3] = Color.TRANSPARENT;
+                        cbody.put(y1,x1,cchange);
+                        y1++;
+                    }
+                    System.out.println(y1 + "," + x1);
+                    y1 = yy;
+                    x1++;
+                }
+                */
+                Message msg = mMainHandler.obtainMessage();
+                msg.what = 1;
+                mMainHandler.sendMessage(msg);
+
+            }
+        }).start();
+
+        /*
         float x1 = 0,x2 = 0,y1 = 0,y2 = 0;
         float mouse_x = 0.0f;
         float mouse_y = 0.0f;
@@ -1688,5 +1741,50 @@ public class MainActivity extends AppCompatActivity {
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent,PICK_FROM_ALBUM);
 
+    }
+
+    class SendMassgeHandler extends Handler {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            switch (msg.what) {
+                case 1:
+                    user_face2.setImageDrawable(new BitmapDrawable(getResources(), bmOverlay));
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    };
+
+    public boolean WriteImage(String strFileName, Bitmap strBuf) { // 파일저장 메소드
+
+        FileOutputStream outputStream;
+        String sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+
+        try {
+            File file = new File(sdPath+"/"+strFileName+".txt");
+            outputStream = new FileOutputStream(file);
+            //outputStream.write(strBuf);
+            outputStream.close();
+            Toast.makeText(getApplicationContext(), "파일 저장 완료", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
+    private Bitmap overlayMark(Bitmap bmp1, Bitmap bmp2,int x, int y)
+    {
+        Bitmap bmOverlay = Bitmap.createBitmap(bmp1.getWidth(), bmp1.getHeight(), bmp1.getConfig());
+        Canvas canvas = new Canvas(bmOverlay);
+        canvas.drawBitmap(bmp1, 0, 0, null);
+        canvas.drawBitmap(bmp2, x, y, null);
+        return bmOverlay;
     }
 }
