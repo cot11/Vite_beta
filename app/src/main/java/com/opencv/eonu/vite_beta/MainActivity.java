@@ -268,25 +268,49 @@ public class MainActivity extends AppCompatActivity {
     private void Dection(View v)
     {
 
-        bmOverlay = Bitmap.createBitmap(500,1000, Bitmap.Config.ARGB_8888);
-
-        face_t = BitmapFactory.decodeResource(context.getResources(), R.drawable.face181bbb39);
-        foot_t = BitmapFactory.decodeResource(context.getResources(), R.drawable.foot176bbb739);
-        leg_t = BitmapFactory.decodeResource(context.getResources(), R.drawable.leg157bbb435);
-        body_t = BitmapFactory.decodeResource(context.getResources(), R.drawable.body157bbb143);
 
         //String sdPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Download/41,169.png";
-        //final Bitmap bitmap1 = BitmapFactory.decodeFile(sdPath);
+        bmOverlay = BitmapFactory.decodeResource(context.getResources(), R.drawable.face);
+        foot_t = BitmapFactory.decodeResource(context.getResources(), R.drawable.foot);
+        leg_t = BitmapFactory.decodeResource(context.getResources(), R.drawable.leg);
+        body_t = BitmapFactory.decodeResource(context.getResources(), R.drawable.body);
+
+
+        /*
+        Mat face_mat = new Mat();
+        Mat body_mat = new Mat();
+        Mat leg_mat = new Mat();
+        bmOverlay = Bitmap.createBitmap(user_face.getMaxWidth(),user_face.getMaxHeight(), Bitmap.Config.ARGB_8888);
+        Utils.bitmapToMat(face_t,face_mat);
+        Utils.bitmapToMat(body_t,body_mat);
+        Utils.bitmapToMat(leg_t,leg_mat);
+
+        Size size = new Size(user_face.getMaxWidth(), user_face.getMaxHeight());
+        Imgproc.resize(face_mat,face_mat,size);
+        Imgproc.resize(body_mat,body_mat,size);
+        Imgproc.resize(leg_mat,leg_mat,size);
+
+        face_t = Bitmap.createBitmap(user_face.getMaxWidth(),user_face.getMaxHeight(), Bitmap.Config.ARGB_8888);
+        body_t = Bitmap.createBitmap(user_face.getMaxWidth(),user_face.getMaxHeight(), Bitmap.Config.ARGB_8888);
+        leg_t = Bitmap.createBitmap(user_face.getMaxWidth(),user_face.getMaxHeight(), Bitmap.Config.ARGB_8888);
+
+        Utils.matToBitmap(face_mat,face_t);
+        Utils.matToBitmap(body_mat,body_t);
+        Utils.matToBitmap(leg_mat,leg_t);
+
+        */
+
+
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 // TODO Auto-generated method stub
 
-                bmOverlay = overlayMark(bmOverlay,face_t,181,39);
-                bmOverlay = overlayMark(bmOverlay,body_t,157,143);
-                //bmOverlay = overlayMark(bmOverlay,foot_t,176,739);
-                //bmOverlay = overlayMark(bmOverlay,leg_t,0,0);
+                bmOverlay = overlayMark(bmOverlay, body_t);
+                bmOverlay = overlayMark(bmOverlay, leg_t);
+                bmOverlay = overlayMark(bmOverlay, foot_t);
+
                 Message msg = mMainHandler.obtainMessage();
                 msg.what = 1;
                 mMainHandler.sendMessage(msg);
@@ -1619,7 +1643,7 @@ public class MainActivity extends AppCompatActivity {
         Size chage_size = new Size(facemat.width()/change_sizeW, facemat.height()/change_sizeH);
         Size ch_size = new Size(102, 112);
 
-        Imgproc.resize(facemat_temp,facemat_temp,ch_size);
+      Imgproc.resize(facemat_tem  p,facemat_temp,ch_size);
         Imgproc.resize(facemat,facemat,chage_size);
 
         dstBmp = Bitmap.createBitmap(facemat.width(), facemat.height(), Bitmap.Config.ARGB_8888);
@@ -1761,12 +1785,12 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private Bitmap overlayMark(Bitmap bmp1, Bitmap bmp2,int x, int y)
+    private Bitmap overlayMark(Bitmap bmp1, Bitmap bmp2)
     {
         Bitmap temp = Bitmap.createBitmap(bmp1.getWidth(), bmp1.getHeight(), bmp1.getConfig());
         Canvas canvas = new Canvas(temp);
         canvas.drawBitmap(bmp1, 0, 0, null);
-        canvas.drawBitmap(bmp2, x, y, null);
+        canvas.drawBitmap(bmp2, 0, 0, null);
         return temp;
     }
 }
